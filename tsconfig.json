@@ -1,12 +1,13 @@
 {
     "compilerOptions": {
-        "outDir": "./target",
-        "target": "esnext",
+        // "outDir": "./target",
+        "target": "es2019",
         "module": "AMD",
         "allowJs": true
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "docs/**/*"
     ],
     "exclude": [
         "node_modules",
