@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "outDir": "./target",
+        "target": "esnext",
+        "module": "AMD",
+        "allowJs": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
