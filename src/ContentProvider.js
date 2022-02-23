@@ -6,10 +6,14 @@ define(["require", "exports", "./util/FuncLib", "jquery"], function (require, ex
      * Update page content by adding content into `div` tags.
      */
     class ContentProvider {
-        constructor(file_path, refresh_interval = undefined) {
+        constructor(file_path, refresh_interval = null) {
+            /**
+             * The id of setInteval. If
+             */
+            this.refresh_id = null;
             (0, FuncLib_1.log)("Creating Content Provider: \"" + file_path + "\"");
             this.file_path = file_path;
-            if (refresh_interval != undefined) {
+            if (refresh_interval != null) {
                 this.updateAutomatically(refresh_interval);
             }
         }
@@ -22,6 +26,9 @@ define(["require", "exports", "./util/FuncLib", "jquery"], function (require, ex
         updateAutomatically(interval) {
             if (this.refresh_id != null) {
                 this.cancelAutoUpdate();
+            }
+            if (interval <= 0) {
+                (0, FuncLib_1.warn)("You cannot set a non-positive interval for auto-update");
             }
             this.refresh_id = setInterval(this.provide, interval);
         }

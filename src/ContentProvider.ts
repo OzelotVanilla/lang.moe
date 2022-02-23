@@ -12,15 +12,15 @@ export class ContentProvider
     file_path: string;
 
     /**
-     * The id of setInteval.
+     * The id of setInteval. If 
      */
-    refresh_id: number | null;
+    refresh_id: number | null = null;
 
-    constructor(file_path: string, refresh_interval: number = undefined)
+    constructor(file_path: string, refresh_interval: number = null)
     {
         log("Creating Content Provider: \"" + file_path + "\"");
         this.file_path = file_path;
-        if (refresh_interval != undefined) { this.updateAutomatically(refresh_interval); }
+        if (refresh_interval != null) { this.updateAutomatically(refresh_interval); }
     }
 
     public provide(tag_id: string): void
@@ -37,6 +37,7 @@ export class ContentProvider
     public updateAutomatically(interval: number): void
     {
         if (this.refresh_id != null) { this.cancelAutoUpdate(); }
+        if (interval <= 0) { warn("You cannot set a non-positive interval for auto-update"); }
         this.refresh_id = setInterval(this.provide, interval);
     }
 

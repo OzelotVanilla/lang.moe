@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "rootDir": "./",
         // "outDir": "./target",
         "target": "es2019",
         "module": "AMD",
