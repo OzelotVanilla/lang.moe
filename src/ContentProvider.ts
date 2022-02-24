@@ -1,6 +1,8 @@
 import { log, warn } from "./util/FuncLib";
 import * as $ from "jquery";
 
+export enum ProvideFrom { markdown, html };
+
 /**
  * Update page content by adding content into `div` tags.
  */
@@ -12,14 +14,21 @@ export class ContentProvider
     file_path: string;
 
     /**
-     * The id of setInteval. If 
+     * The type of source file.
+     */
+    provide_type: ProvideFrom;
+
+    /**
+     * The id of setInteval. If the id is null, that means no setInteval is working.
      */
     refresh_id: number | null = null;
 
-    constructor(file_path: string, refresh_interval: number = null)
+
+    constructor(file_path: string, provide_type: ProvideFrom = ProvideFrom.markdown, refresh_interval: number = null)
     {
         log("Creating Content Provider: \"" + file_path + "\"");
         this.file_path = file_path;
+        this.provide_type = provide_type;
         if (refresh_interval != null) { this.updateAutomatically(refresh_interval); }
     }
 
@@ -29,9 +38,13 @@ export class ContentProvider
         $("#" + tag_id).text("Test text, waiting for implementation...");
     }
 
-    public registNewGrammar(): void
+    public registNewGrammar(type: ProvideFrom, /* Parameter for Grammar */): void
     {
-
+        switch (type)
+        {
+            case ProvideFrom.markdown: break;
+            case ProvideFrom.html: throw TypeError("HTML is not supported now");
+        }
     }
 
     public updateAutomatically(interval: number): void
