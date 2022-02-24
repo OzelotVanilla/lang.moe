@@ -11,15 +11,9 @@
         requirejs.config({
             baseUrl: "../"
         });
-        define(
-            ["require", "exports", "src/ContentProvider"],
-            function (require, exports, ContentProvider_1)
-            {
-                "use strict";
-                Object.defineProperty(exports, "__esModule", { value: true });
-                let provider = new ContentProvider_1.ContentProvider("./readme.md");
-                provider.provide("main_content");
-            }
+        require(
+            ["./index.js"],
+            function (params) { console.log("Loaded"); }
         );
     </script>
     <title>Document</title>
