@@ -1,3 +1,8 @@
+enum SpecialStartings
+{
+    "*", "#", ">", "-"
+}
+
 /**
  * 
  */
