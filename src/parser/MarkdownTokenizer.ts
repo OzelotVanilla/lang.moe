@@ -1,4 +1,4 @@
-import { log, readFileAsync } from "../util/FuncLib";
+import { readFileAsync } from "../util/FuncLib";
 
 enum SpecialStartings
 {
@@ -19,11 +19,12 @@ export class MarkdownTokenizer
 
     public result(): string
     {
-        log("Showing parsed result.");
+        console.log("Showing parsed result.");
         let content = "Failed to load file by ajax.";
         readFileAsync(
             this.file_path,
-            (text) => { content = text; }
+            (text) => { content = text; },
+            (status) => { console.warn(status); }
         );
 
         return content;

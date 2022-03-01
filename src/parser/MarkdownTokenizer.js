@@ -17,9 +17,9 @@ define(["require", "exports", "../util/FuncLib"], function (require, exports, Fu
             this.file_path = file_path;
         }
         result() {
-            (0, FuncLib_1.log)("Showing parsed result.");
+            console.log("Showing parsed result.");
             let content = "Failed to load file by ajax.";
-            (0, FuncLib_1.readFileAsync)(this.file_path, (text) => { content = text; });
+            (0, FuncLib_1.readFileAsync)(this.file_path, (text) => { content = text; }, (status) => { console.warn(status); });
             return content;
         }
     }

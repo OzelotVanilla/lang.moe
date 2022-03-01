@@ -1,5 +1,3 @@
-export const log = console.log;
-export const warn = console.warn;
 export const setPageTitle =
     (name: string) => { document.getElementsByTagName("title")[0].innerText = name; };
 export const readFileAsync =
@@ -14,6 +12,11 @@ export const readFileAsync =
             {
                 success_action(ajax_reader.responseText);
             }
-            else { failed_action(ajax_reader.status); }
+            else
+            {
+                console.log("Something went wrong with ajax_reader:\n" + ajax_reader);
+                console.log("The status is " + ajax_reader.status + " and ready_state is " + ajax_reader.readyState);
+                failed_action(ajax_reader.status);
+            }
         }
     };

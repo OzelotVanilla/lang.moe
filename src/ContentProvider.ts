@@ -1,6 +1,4 @@
-import { log, warn } from "./util/FuncLib";
 import * as $ from "jquery";
-import * as fs from "fs";
 import { MarkdownTokenizer } from "./parser/MarkdownTokenizer";
 
 export enum ProvideFrom { markdown, html };
@@ -28,7 +26,7 @@ export class ContentProvider
 
     constructor(file_path: string, provide_type: ProvideFrom = ProvideFrom.markdown, refresh_interval: number = null)
     {
-        log("Creating Content Provider: \"" + file_path + "\"");
+        console.log("Creating Content Provider: \"" + file_path + "\"");
         this.file_path = file_path;
         this.provide_type = provide_type;
         if (refresh_interval != null) { this.updateAutomatically(refresh_interval); }
@@ -41,7 +39,7 @@ export class ContentProvider
      */
     public provide(tag_id: string): void
     {
-        log("Providing content from \"" + this.file_path + "\" to div tag \"" + tag_id + "\"");
+        console.log("Providing content from \"" + this.file_path + "\" to div tag \"" + tag_id + "\"");
         switch (this.provide_type)
         {
             case ProvideFrom.markdown: this.provideFromMarkdown(tag_id);
@@ -65,7 +63,7 @@ export class ContentProvider
     public updateAutomatically(interval: number): void
     {
         if (this.refresh_id != null) { this.cancelAutoUpdate(); }
-        if (interval <= 0) { warn("You cannot set a non-positive interval for auto-update"); }
+        if (interval <= 0) { console.warn("You cannot set a non-positive interval for auto-update"); }
         this.refresh_id = setInterval(this.provide, interval);
     }
 
@@ -73,7 +71,7 @@ export class ContentProvider
     {
         if (this.refresh_id == null)
         {
-            warn("No auto-update job set!");
+            console.warn("No auto-update job set!");
         }
         else
         {

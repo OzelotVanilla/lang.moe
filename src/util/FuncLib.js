@@ -1,9 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.readFileAsync = exports.setPageTitle = exports.warn = exports.log = void 0;
-    exports.log = console.log;
-    exports.warn = console.warn;
+    exports.readFileAsync = exports.setPageTitle = void 0;
     const setPageTitle = (name) => { document.getElementsByTagName("title")[0].innerText = name; };
     exports.setPageTitle = setPageTitle;
     const readFileAsync = function (url, success_action, failed_action) {
@@ -15,6 +13,8 @@ define(["require", "exports"], function (require, exports) {
                 success_action(ajax_reader.responseText);
             }
             else {
+                console.log("Something went wrong with ajax_reader:\n" + ajax_reader);
+                console.log("The status is " + ajax_reader.status + " and ready_state is " + ajax_reader.readyState);
                 failed_action(ajax_reader.status);
             }
         };
