@@ -13,7 +13,8 @@ define(["require", "exports"], function (require, exports) {
                 success_action(ajax_reader.responseText);
             }
             else {
-                console.log("Something went wrong with ajax_reader:\n" + ajax_reader);
+                console.log("Something went wrong with ajax_reader:");
+                console.log(ajax_reader);
                 console.log("The status is " + ajax_reader.status + " and ready_state is " + ajax_reader.readyState);
                 failed_action(ajax_reader.status);
             }
