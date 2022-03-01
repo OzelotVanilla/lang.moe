@@ -1,4 +1,4 @@
-define(["require", "exports", "./util/FuncLib", "jquery"], function (require, exports, FuncLib_1, $) {
+define(["require", "exports", "./util/FuncLib", "jquery", "./parser/MarkdownTokenizer"], function (require, exports, FuncLib_1, $, MarkdownTokenizer_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ContentProvider = exports.ProvideFrom = void 0;
@@ -24,9 +24,19 @@ define(["require", "exports", "./util/FuncLib", "jquery"], function (require, ex
                 this.updateAutomatically(refresh_interval);
             }
         }
+        /**
+         * The `ContentProvider` will offer HTML result to the specified HTML tags.
+         *
+         * @param tag_id The <i>id</i> property for the specified HTML tags
+         */
         provide(tag_id) {
             (0, FuncLib_1.log)("Providing content from \"" + this.file_path + "\" to div tag \"" + tag_id + "\"");
-            $("#" + tag_id).text("Test text, waiting for implementation...");
+            switch (this.provide_type) {
+                case ProvideFrom.markdown: this.provideFromMarkdown(tag_id);
+            }
+        }
+        provideFromMarkdown(tag_id) {
+            $("#" + tag_id).text(new MarkdownTokenizer_1.MarkdownTokenizer(this.file_path).result());
         }
         registNewGrammar(type) {
             switch (type) {

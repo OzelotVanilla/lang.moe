@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../util/FuncLib"], function (require, exports, FuncLib_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.MarkdownTokenizer = void 0;
@@ -13,6 +13,15 @@ define(["require", "exports"], function (require, exports) {
      *
      */
     class MarkdownTokenizer {
+        constructor(file_path) {
+            this.file_path = file_path;
+        }
+        result() {
+            (0, FuncLib_1.log)("Showing parsed result.");
+            let content = "Failed to load file by ajax.";
+            (0, FuncLib_1.readFileAsync)(this.file_path, (text) => { content = text; });
+            return content;
+        }
     }
     exports.MarkdownTokenizer = MarkdownTokenizer;
 });

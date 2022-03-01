@@ -1,5 +1,7 @@
 import { log, warn } from "./util/FuncLib";
 import * as $ from "jquery";
+import * as fs from "fs";
+import { MarkdownTokenizer } from "./parser/MarkdownTokenizer";
 
 export enum ProvideFrom { markdown, html };
 
@@ -32,10 +34,23 @@ export class ContentProvider
         if (refresh_interval != null) { this.updateAutomatically(refresh_interval); }
     }
 
+    /**
+     * The `ContentProvider` will offer HTML result to the specified HTML tags.
+     * 
+     * @param tag_id The <i>id</i> property for the specified HTML tags
+     */
     public provide(tag_id: string): void
     {
         log("Providing content from \"" + this.file_path + "\" to div tag \"" + tag_id + "\"");
-        $("#" + tag_id).text("Test text, waiting for implementation...");
+        switch (this.provide_type)
+        {
+            case ProvideFrom.markdown: this.provideFromMarkdown(tag_id);
+        }
+    }
+
+    private provideFromMarkdown(tag_id: string): void
+    {
+        $("#" + tag_id).text(new MarkdownTokenizer(this.file_path).result());
     }
 
     public registNewGrammar(type: ProvideFrom, /* Parameter for Grammar */): void
