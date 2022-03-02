@@ -18,9 +18,7 @@ define(["require", "exports", "../util/FuncLib"], function (require, exports, Fu
         }
         result() {
             console.log("Showing parsed result.");
-            let content = "Failed to load file by ajax.";
-            (0, FuncLib_1.readFileAsync)(this.file_path, (text) => { content = text; }, (status) => { console.warn(status); });
-            return content;
+            return (0, FuncLib_1.readFileSync)(this.file_path);
         }
     }
     exports.MarkdownTokenizer = MarkdownTokenizer;

@@ -10,6 +10,7 @@ export const readFileAsync =
         {
             if (ajax_reader.readyState == 4 && ajax_reader.status == 200)
             {
+                console.log("ajax_reader finish loading job");
                 success_action(ajax_reader.responseText);
             }
             else
@@ -20,4 +21,14 @@ export const readFileAsync =
                 failed_action(ajax_reader.status);
             }
         }
+    };
+
+export const readFileSync =
+    function (url: string)
+    {
+        return $.ajax({
+            url: url,
+            type: "GET",
+            async: false
+        }).responseText;
     };

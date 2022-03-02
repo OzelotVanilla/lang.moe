@@ -1,7 +1,7 @@
 define(["require", "exports"], function (require, exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.readFileAsync = exports.setPageTitle = void 0;
+    exports.readFileSync = exports.readFileAsync = exports.setPageTitle = void 0;
     const setPageTitle = (name) => { document.getElementsByTagName("title")[0].innerText = name; };
     exports.setPageTitle = setPageTitle;
     const readFileAsync = function (url, success_action, failed_action) {
@@ -10,6 +10,7 @@ define(["require", "exports"], function (require, exports) {
         ajax_reader.send();
         ajax_reader.onreadystatechange = () => {
             if (ajax_reader.readyState == 4 && ajax_reader.status == 200) {
+                console.log("ajax_reader finish loading job");
                 success_action(ajax_reader.responseText);
             }
             else {
@@ -21,4 +22,12 @@ define(["require", "exports"], function (require, exports) {
         };
     };
     exports.readFileAsync = readFileAsync;
+    const readFileSync = function (url) {
+        return $.ajax({
+            url: url,
+            type: "GET",
+            async: false
+        }).responseText;
+    };
+    exports.readFileSync = readFileSync;
 });
