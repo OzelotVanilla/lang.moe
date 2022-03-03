@@ -1,5 +1,6 @@
 import * as $ from "jquery";
 import { MarkdownTokenizer } from "./parser/MarkdownTokenizer";
+import { readFileAsync } from "./util/FuncLib";
 
 export enum ProvideFrom { markdown, html };
 
@@ -37,18 +38,36 @@ export class ContentProvider
      * 
      * @param tag_id The <i>id</i> property for the specified HTML tags
      */
-    public provide(tag_id: string): void
+    public provide(tag_id: string, que_async: boolean = true): void
     {
         console.log("Providing content from \"" + this.file_path + "\" to div tag \"" + tag_id + "\"");
         switch (this.provide_type)
         {
-            case ProvideFrom.markdown: this.provideFromMarkdown(tag_id);
+            case ProvideFrom.markdown: this.provideFromMarkdown(tag_id, que_async);
         }
     }
 
-    private provideFromMarkdown(tag_id: string): void
+    private provideFromMarkdown(tag_id: string, que_async: boolean = true): void
     {
-        $("#" + tag_id).text(new MarkdownTokenizer(this.file_path).result());
+        if (que_async == true)
+        {
+            readFileAsync(
+                this.file_path,
+                function onSuccessAction(original_text: any)
+                {
+                    let md_tokenizer = new MarkdownTokenizer({ original_text: original_text as string });
+                    $("#" + tag_id).text(original_text);
+                }
+            );
+        }
+        else
+        {
+            let s = new MarkdownTokenizer({
+                file_path: this.file_path
+            }).result();
+            console.log(s);
+            $("#" + tag_id).text(s);
+        }
     }
 
     public registNewGrammar(type: ProvideFrom, /* Parameter for Grammar */): void

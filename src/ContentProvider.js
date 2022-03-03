@@ -1,4 +1,4 @@
-define(["require", "exports", "jquery", "./parser/MarkdownTokenizer"], function (require, exports, $, MarkdownTokenizer_1) {
+define(["require", "exports", "jquery", "./parser/MarkdownTokenizer", "./util/FuncLib"], function (require, exports, $, MarkdownTokenizer_1, FuncLib_1) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ContentProvider = exports.ProvideFrom = void 0;
@@ -29,14 +29,26 @@ define(["require", "exports", "jquery", "./parser/MarkdownTokenizer"], function 
          *
          * @param tag_id The <i>id</i> property for the specified HTML tags
          */
-        provide(tag_id) {
+        provide(tag_id, que_async = true) {
             console.log("Providing content from \"" + this.file_path + "\" to div tag \"" + tag_id + "\"");
             switch (this.provide_type) {
-                case ProvideFrom.markdown: this.provideFromMarkdown(tag_id);
+                case ProvideFrom.markdown: this.provideFromMarkdown(tag_id, que_async);
             }
         }
-        provideFromMarkdown(tag_id) {
-            $("#" + tag_id).text(new MarkdownTokenizer_1.MarkdownTokenizer(this.file_path).result());
+        provideFromMarkdown(tag_id, que_async = true) {
+            if (que_async == true) {
+                (0, FuncLib_1.readFileAsync)(this.file_path, function onSuccessAction(original_text) {
+                    let md_tokenizer = new MarkdownTokenizer_1.MarkdownTokenizer({ original_text: original_text });
+                    $("#" + tag_id).text(original_text);
+                });
+            }
+            else {
+                let s = new MarkdownTokenizer_1.MarkdownTokenizer({
+                    file_path: this.file_path
+                }).result();
+                console.log(s);
+                $("#" + tag_id).text(s);
+            }
         }
         registNewGrammar(type) {
             switch (type) {

@@ -1,8 +1,14 @@
-import { readFileAsync, readFileSync } from "../util/FuncLib";
+import { readFileSync } from "../util/FuncLib";
 
 enum SpecialStartings
 {
     "*", "#", ">", "-"
+}
+
+interface MarkdownTokenizerConfig
+{
+    file_path?: string;
+    original_text?: string;
 }
 
 /**
@@ -10,11 +16,23 @@ enum SpecialStartings
  */
 export class MarkdownTokenizer
 {
-    file_path: string;
+    readonly file_path?: string;
 
-    constructor(file_path: string)
+    private buffer_of_parsed;
+
+    private previous_line_type;
+
+    private current_line_type;
+
+    constructor(config: MarkdownTokenizerConfig)
     {
-        this.file_path = file_path;
+        if (config.file_path ?? false) { this.file_path = config.file_path; }
+        else if (config.original_text ?? false) { this.parse(config.original_text); }
+    }
+
+    private parse(text: string)
+    {
+
     }
 
     public result(): string

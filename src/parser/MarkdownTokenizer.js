@@ -13,8 +13,16 @@ define(["require", "exports", "../util/FuncLib"], function (require, exports, Fu
      *
      */
     class MarkdownTokenizer {
-        constructor(file_path) {
-            this.file_path = file_path;
+        constructor(config) {
+            var _a, _b;
+            if ((_a = config.file_path) !== null && _a !== void 0 ? _a : false) {
+                this.file_path = config.file_path;
+            }
+            else if ((_b = config.original_text) !== null && _b !== void 0 ? _b : false) {
+                this.parse(config.original_text);
+            }
+        }
+        parse(text) {
         }
         result() {
             console.log("Showing parsed result.");

@@ -19,7 +19,7 @@ Then, the `tokenizer` will read the file **line by line**.
 ### Parsing
 
 The `parser` will read file started with no *previous line type*.
-When it found a <u>non-empty</u> line, it will try to analyse the
+When it found a <u>non-empty</u> line, it will try to analyze the
 *characteristic*  of that line, saving that as *current line type*.
 
 ### Packing

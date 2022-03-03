@@ -3,4 +3,6 @@
  * This will be done first by
  */
 export class PatternMulLine
-{ }
+{
+    readonly indent?: number;
+}
