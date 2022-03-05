@@ -2,7 +2,7 @@
     "compilerOptions": {
         "rootDir": "./",
         // "outDir": "./target",
-        "target": "es2019",
+        "target": "es2020",
         "module": "AMD",
         "allowJs": true
     },
