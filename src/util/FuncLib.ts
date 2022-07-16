@@ -1,3 +1,5 @@
+import * as $ from "jquery";
+
 export const setPageTitle =
     (name: string) => { document.getElementsByTagName("title")[0].innerText = name; };
 export const readFileAsync =
@@ -22,4 +24,18 @@ export const readFileSync =
             dataType: "text",
             async: false
         }).responseText;
+    };
+
+export const readURLParam =
+    function (): Map<string, string>
+    {
+        // Get the parameter after the "?"
+        let params = (new URL(window.location.href)).searchParams;
+        let result = new Map<string, string>();
+        for (let entry of params.entries())
+        {
+            result[entry[0]] = entry[1];
+        }
+
+        return result;
     };

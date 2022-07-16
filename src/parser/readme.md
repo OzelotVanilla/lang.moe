@@ -16,11 +16,20 @@ The file should better be <u>well-formatted</u>:
 
 Then, the `tokenizer` will read the file **line by line**.
 
+
+
 ### Parsing
 
 The `parser` will read file started with no *previous line type*.
 When it found a <u>non-empty</u> line, it will try to analyze the
-*characteristic*  of that line, saving that as *current line type*.
+*characteristic* of that line, saving that as *current line type*.
+If next line has same *line type*, they will be grouped together.
+
+#### How to decide the characteristic?
+
+Key: to test each line fulfill some **pattern** that already defined.
+
+
 
 ### Packing
 

@@ -55,7 +55,7 @@ export class ContentProvider
                 this.file_path,
                 function onSuccessAction(original_text: any)
                 {
-                    let md_tokenizer = new MarkdownTokenizer({ original_text: original_text as string });
+                    let md_tokenizer = new MarkdownTokenizer({ original_text: original_text.toString() });
                     $("#" + tag_id).text(original_text);
                 }
             );

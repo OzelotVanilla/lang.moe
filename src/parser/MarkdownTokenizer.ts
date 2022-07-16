@@ -9,8 +9,8 @@ interface MarkdownTokenizerConfig
 interface Token
 {
     type: TokenType,
-    indent: number,
-    inside: Token[],
+    indent?: number,
+    inside?: Token[],
     original_text?: string
 }
 
@@ -28,6 +28,10 @@ enum TokenType
      * 
      */
     HTML_tags,
+    /**
+     * Like "[src]" or "(./path/file.jpg)"
+     */
+    paired_in_line,
     /**
      * Like "$$" or "```"
      */
@@ -62,13 +66,16 @@ export class MarkdownTokenizer
     /**
      * If the line only has these character's repeating, its type will become `LineType.notation`.
      */
-    private line_notation_repeatings = ['-', '='];
+    private line_notation_repeatings = ['-', '=', '*'];
 
     /**
     * If the line only contains one of them, its type will become `LineType.notation`.
     */
     private line_notation_fixed_len = ["$$", "```"];
 
+    /**
+     * If one line start with it, it should be tokenized as special formatted line.
+     */
     private text_special_startings = ['*', '#', '>', '-', '+'];
 
 
@@ -93,14 +100,13 @@ export class MarkdownTokenizer
         let previous_line_type: LineType = null;
         let current_line_type: LineType = null;
 
-        for (let line of lines)
+        for (const line of lines)
         {
-            current_line_type = this.decideLineType(line);
-
-            // Search for inline tokens.
-            if (current_line_type == LineType.text)
+            // If text line, search for inline tokens.
+            if ((current_line_type = this.decideLineType(line)) == LineType.text)
             {
-
+                // TODO
+                let tokenized_line = this.groupTextAndTokenize(line);
             }
         }
     }
@@ -115,11 +121,48 @@ export class MarkdownTokenizer
         line_text = line_text.trimEnd();
         if (
             this.line_notation_fixed_len.includes(line_text)
-            || (line_text.split("").every(c => c == line_text[0]) // If only repeat one char
-                && this.line_notation_repeatings.includes(line_text[0]))
+            || (line_text.split("").every(c => c == line_text[0])    // If only repeat one char
+                && this.line_notation_repeatings.includes(line_text[0])
+                && line_text.length >= 3)    // ... and more than 3 times
         ) { return LineType.notation; }
 
         // If not other types of line.
         return LineType.text;
+    }
+
+    /**
+     * This will grouped the text according to whether they were surrounded by paired characters.
+     * If cannot 
+     * 
+     * Examples:
+     * 
+     * `"I (me) my"` -> ["I", "(me)", "my"]
+     * 
+     * "Some [[prototype]] here" -> ["Some", ["[", "[prototype]", "]"], "here"]
+     * 
+     * "Missing `(` another?" -> ["Missing", "`(`"]
+     * 
+     * @param text The text to be grouped
+     */
+    private groupTextAndTokenize(text: string): Token[]
+    {
+        const paired_start = ["$", "`", "==", "**", "*", "(", "[", "{", "<"];
+        const paired_end = ["$", "`", "==", "**", "*", ")", "]", "}", ">",];
+        let characters = text.split(/(\(|\)|\[|\]|\{|\}|\<|\>|\`|\$|==|\*\*|\*)/);
+        let buffer: string[] = [];
+        let result: string[] = [];
+
+        // Add characters to a buffer, if found one
+        let waiting_pair_end: boolean = false;
+        for (const c of characters)
+        {
+            if (c.length == 0) { continue; }
+            if (paired_start.includes(c)) { waiting_pair_end = true; }
+            if (waiting_pair_end && paired_end.includes(c)) { }
+
+            // TODO
+        }
+
+        return [];
     }
 }

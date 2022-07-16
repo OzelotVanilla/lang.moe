@@ -38,7 +38,7 @@ define(["require", "exports", "jquery", "./parser/MarkdownTokenizer", "./util/Fu
         provideFromMarkdown(tag_id, que_async = true) {
             if (que_async == true) {
                 (0, FuncLib_1.readFileAsync)(this.file_path, function onSuccessAction(original_text) {
-                    let md_tokenizer = new MarkdownTokenizer_1.MarkdownTokenizer({ original_text: original_text });
+                    let md_tokenizer = new MarkdownTokenizer_1.MarkdownTokenizer({ original_text: original_text.toString() });
                     $("#" + tag_id).text(original_text);
                 });
             }
