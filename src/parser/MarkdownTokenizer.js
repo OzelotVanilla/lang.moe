@@ -48,7 +48,7 @@ define(["require", "exports", "../util/FuncLib"], function (require, exports, Fu
             /**
              * If the line only has these character's repeating, its type will become `LineType.notation`.
              */
-            this.line_notation_repeatings = ['-', '='];
+            this.line_notation_repeatings = ['-', '=', '*'];
             /**
             * If the line only contains one of them, its type will become `LineType.notation`.
             */
@@ -64,18 +64,23 @@ define(["require", "exports", "../util/FuncLib"], function (require, exports, Fu
                 this.parse(config.original_text);
             }
         }
+        /**
+         * Add trigger characters, let parser convert it into token.
+         */
+        addTriggerCharacters() { }
         result() {
             console.log("Showing parsed result.");
             return (0, FuncLib_1.readFileSync)(this.file_path);
         }
         parse(text) {
-            // The parser will read file line by line.
-            // First, split the origin str by "\n". Multiple "\n" will have a empty string.
-            let lines = text.split(/\n/); // Example: "test\n\nstr" will be ["test", "", "str"].
+            // First, group target into paragraph
+            // Example: "test\nparagraph\n\none str" will be ["test paragraph", "one str"].
+            let paragraphs = text.split(/\n{2,}/).map(element => element.replaceAll(/\n/g, " "));
+            // Split text using detecting trigger character (like "**")
             let line_index = 0;
             let previous_line_type = null;
             let current_line_type = null;
-            for (const line of lines) {
+            for (const line of paragraphs) {
                 // If text line, search for inline tokens.
                 if ((current_line_type = this.decideLineType(line)) == LineType.text) {
                     // TODO

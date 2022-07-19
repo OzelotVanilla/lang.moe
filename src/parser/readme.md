@@ -4,6 +4,8 @@
 Methodology
 ----
 
+Unlike common markdown, this program will consider all char after `\` as an escape char.
+
 ### Preparing
 
 The `tokenizer` will first open the markdown file by given path
@@ -25,9 +27,30 @@ When it found a <u>non-empty</u> line, it will try to analyze the
 *characteristic* of that line, saving that as *current line type*.
 If next line has same *line type*, they will be grouped together.
 
+* split text into paragraphs
+
+For each line, as the grammar of Markdown, text like this will be considered as **one paragraph**:
+
+```markdown
+This is a whole
+paragraph.
+```
+
+At that time, the `return` at the end will be considered as `space`. Only the text with more than 2 `return` between will be considered separated paragraph.
+
+First, the parser will separate all text into different paragraph (`split(/\n{2,}/)`), and convert each `return` at end of line to `space`.
+
+* convert chars into token
+
+There are some chars that have special meaning in markdown, such as `*` sign. These symbol can be seen as *trigger char*, because parser will push them into stack, try to convert it into special token, but not leave it as plaintext.
+
+For each trigger char, there are current (one or more) *token pattern* corresponding. When reading the text behind, each av
+
+
+
 #### How to decide the characteristic?
 
-Key: to test each line fulfill some **pattern** that already defined.
+Key: to test each line fulfill some **pattern** that already defined.
 
 
 

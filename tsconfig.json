@@ -2,7 +2,7 @@
     "compilerOptions": {
         "rootDir": "./",
         // "outDir": "./target",
-        "target": "es2020",
+        "target": "es2021",
         "module": "AMD",
         "allowJs": true
     },
@@ -12,6 +12,7 @@
     ],
     "exclude": [
         "node_modules",
-        "**/*.spec.ts"
+        "**/*.spec.ts",
+        "util/TypeLib.ts"
     ]
 }

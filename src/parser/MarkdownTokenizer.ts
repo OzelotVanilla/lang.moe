@@ -61,6 +61,11 @@ export class MarkdownTokenizer
 {
     readonly file_path?: string;
 
+    /**
+     * Patterns registered
+     */
+    private pattern;
+
     private buffer_of_parsed: Token[];
 
     /**
@@ -85,6 +90,12 @@ export class MarkdownTokenizer
         else if (config.original_text ?? false) { this.parse(config.original_text); }
     }
 
+    /**
+     * Add trigger characters, let parser convert it into token.
+     */
+    public addTriggerCharacters()
+    { }
+
     public result(): string
     {
         console.log("Showing parsed result.");
@@ -93,14 +104,16 @@ export class MarkdownTokenizer
 
     private parse(text: string)
     {
-        // The parser will read file line by line.
-        // First, split the origin str by "\n". Multiple "\n" will have a empty string.
-        let lines: string[] = text.split(/\n/);    // Example: "test\n\nstr" will be ["test", "", "str"].
+        // First, group target into paragraph
+        // Example: "test\nparagraph\n\none str" will be ["test paragraph", "one str"].
+        let paragraphs: string[] = text.split(/\n{2,}/).map(element => element.replaceAll(/\n/g, " "));
+
+        // Split text using detecting trigger character (like "**")
         let line_index: number = 0;
         let previous_line_type: LineType = null;
         let current_line_type: LineType = null;
 
-        for (const line of lines)
+        for (const line of paragraphs)
         {
             // If text line, search for inline tokens.
             if ((current_line_type = this.decideLineType(line)) == LineType.text)

@@ -2,7 +2,7 @@
 
 ## Design of Module
 
-### `MarkDownToken`
+### `MarkdownToken`
 
 This will define token's type, and contains text.
 
